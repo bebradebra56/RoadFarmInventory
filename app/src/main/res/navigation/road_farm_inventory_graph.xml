@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/road_farm_inventory_graph"
+    app:startDestination="@id/roadFarmInventoryLoadFragment">
+
+    <fragment
+        android:id="@+id/roadFarmInventoryLoadFragment"
+        android:name="com.roadfam.farminventsof.tyhjkk.presentation.ui.load.RoadFarmInventoryLoadFragment"
+        android:label="RoadFarmInventoryLoadFragment" >
+        <action
+            android:id="@+id/action_roadFarmInventoryLoadFragment_to_roadFarmInventoryV"
+            app:destination="@id/roadFarmInventoryV"
+            app:popUpTo="@id/road_farm_inventory_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/roadFarmInventoryV"
+        android:name="com.roadfam.farminventsof.tyhjkk.presentation.ui.view.RoadFarmInventoryV"
+        android:label="RoadFarmInventoryV" />
+</navigation>
