@@ -66,7 +66,7 @@ class RoadFarmInventoryPushService : FirebaseMessagingService(){
             this,
             0,
             roadFarmInventoryIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         val roadFarmInventoryNotification = NotificationCompat.Builder(this, ROAD_FARM_INVENTORY_CHANNEL_ID)
