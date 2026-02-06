@@ -55,7 +55,7 @@ fun InventoryScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "Farm Inventory",
+                        text = "Farm Inventor",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold
                     )
