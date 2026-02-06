@@ -35,17 +35,8 @@ class RoadFarmInventoryLoadFragment : Fragment(R.layout.fragment_load_road_farm_
     private val roadFarmInventoryRequestNotificationPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
-        if (isGranted) {
-            roadFarmInventoryNavigateToSuccess(roadFarmInventoryUrl)
-        } else {
-            if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                roadFarmInventorySharedPreference.roadFarmInventoryNotificationRequest =
-                    (System.currentTimeMillis() / 1000) + 259200
-                roadFarmInventoryNavigateToSuccess(roadFarmInventoryUrl)
-            } else {
-                roadFarmInventoryNavigateToSuccess(roadFarmInventoryUrl)
-            }
-        }
+        roadFarmInventorySharedPreference.roadFarmInventoryNotificationState = 2
+        roadFarmInventoryNavigateToSuccess(roadFarmInventoryUrl)
     }
 
 
@@ -56,10 +47,10 @@ class RoadFarmInventoryLoadFragment : Fragment(R.layout.fragment_load_road_farm_
         roadFarmInventoryLoadBinding.roadFarmInventoryGrandButton.setOnClickListener {
             val roadFarmInventoryPermission = Manifest.permission.POST_NOTIFICATIONS
             roadFarmInventoryRequestNotificationPermission.launch(roadFarmInventoryPermission)
-            roadFarmInventorySharedPreference.roadFarmInventoryNotificationRequestedBefore = true
         }
 
         roadFarmInventoryLoadBinding.roadFarmInventorySkipButton.setOnClickListener {
+            roadFarmInventorySharedPreference.roadFarmInventoryNotificationState = 1
             roadFarmInventorySharedPreference.roadFarmInventoryNotificationRequest =
                 (System.currentTimeMillis() / 1000) + 259200
             roadFarmInventoryNavigateToSuccess(roadFarmInventoryUrl)
@@ -85,28 +76,25 @@ class RoadFarmInventoryLoadFragment : Fragment(R.layout.fragment_load_road_farm_
 
                         is RoadFarmInventoryLoadViewModel.RoadFarmInventoryHomeScreenState.RoadFarmInventorySuccess -> {
                             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S_V2) {
-                                val roadFarmInventoryPermission = Manifest.permission.POST_NOTIFICATIONS
-                                val roadFarmInventoryPermissionRequestedBefore = roadFarmInventorySharedPreference.roadFarmInventoryNotificationRequestedBefore
-
-                                if (ContextCompat.checkSelfPermission(requireContext(), roadFarmInventoryPermission) == PackageManager.PERMISSION_GRANTED) {
-                                    roadFarmInventoryNavigateToSuccess(it.data)
-                                } else if (!roadFarmInventoryPermissionRequestedBefore && (System.currentTimeMillis() / 1000 > roadFarmInventorySharedPreference.roadFarmInventoryNotificationRequest)) {
-                                    // первый раз — показываем UI для запроса
-                                    roadFarmInventoryLoadBinding.roadFarmInventoryNotiGroup.visibility = View.VISIBLE
-                                    roadFarmInventoryLoadBinding.roadFarmInventoryLoadingGroup.visibility = View.GONE
-                                    roadFarmInventoryUrl = it.data
-                                } else if (shouldShowRequestPermissionRationale(roadFarmInventoryPermission)) {
-                                    // временный отказ — через 3 дня можно показать
-                                    if (System.currentTimeMillis() / 1000 > roadFarmInventorySharedPreference.roadFarmInventoryNotificationRequest) {
+                                val roadFarmInventoryNotificationState = roadFarmInventorySharedPreference.roadFarmInventoryNotificationState
+                                when (roadFarmInventoryNotificationState) {
+                                    0 -> {
                                         roadFarmInventoryLoadBinding.roadFarmInventoryNotiGroup.visibility = View.VISIBLE
                                         roadFarmInventoryLoadBinding.roadFarmInventoryLoadingGroup.visibility = View.GONE
                                         roadFarmInventoryUrl = it.data
-                                    } else {
+                                    }
+                                    1 -> {
+                                        if (System.currentTimeMillis() / 1000 > roadFarmInventorySharedPreference.roadFarmInventoryNotificationRequest) {
+                                            roadFarmInventoryLoadBinding.roadFarmInventoryNotiGroup.visibility = View.VISIBLE
+                                            roadFarmInventoryLoadBinding.roadFarmInventoryLoadingGroup.visibility = View.GONE
+                                            roadFarmInventoryUrl = it.data
+                                        } else {
+                                            roadFarmInventoryNavigateToSuccess(it.data)
+                                        }
+                                    }
+                                    2 -> {
                                         roadFarmInventoryNavigateToSuccess(it.data)
                                     }
-                                } else {
-                                    // навсегда отклонено — просто пропускаем
-                                    roadFarmInventoryNavigateToSuccess(it.data)
                                 }
                             } else {
                                 roadFarmInventoryNavigateToSuccess(it.data)

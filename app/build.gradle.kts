@@ -21,8 +21,38 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            val isCI = System.getenv("CI") == "true"
+            if (isCI) {
+                val keystorePath = System.getenv("CM_KEYSTORE_PATH")
+                val keystorePassword = System.getenv("CM_KEYSTORE_PASSWORD")
+                val keyAlias = System.getenv("CM_KEY_ALIAS")
+                val keyPassword = System.getenv("CM_KEY_PASSWORD")
+
+                if (keystorePath.isNullOrEmpty()) {
+                    throw GradleException("CM_KEYSTORE_PATH is not set!")
+                }
+
+                storeFile = file(keystorePath)
+                storePassword = keystorePassword
+                this.keyAlias = keyAlias
+                this.keyPassword = keyPassword
+            }
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+
+        debug {
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -95,6 +125,8 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.fragment)
+    implementation(libs.navigation.fragment.ktx)
+    implementation(libs.navigation.ui.ktx)
     ksp(libs.androidx.room.compiler)
     
     // Navigation

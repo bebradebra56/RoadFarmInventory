@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 
 private const val ROAD_FARM_INVENTORY_A = "com.roadfam.farminventsof"
-private const val ROAD_FARM_INVENTORY_B = "roadfarminventory"
+private const val ROAD_FARM_INVENTORY_B = "farm-inventory-92194"
 data class RoadFarmInventoryParam (
     @SerializedName("af_id")
     val roadFarmInventoryAfId: String,

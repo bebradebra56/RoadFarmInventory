@@ -22,16 +22,16 @@ class RoadFarmInventorySharedPreference(context: Context) {
         get() = roadFarmInventoryPrefs.getLong(ROAD_FARM_INVENTORY_NOTIFICAITON_REQUEST, 0L)
         set(value) = roadFarmInventoryPrefs.edit { putLong(ROAD_FARM_INVENTORY_NOTIFICAITON_REQUEST, value) }
 
-    var roadFarmInventoryNotificationRequestedBefore: Boolean
-        get() = roadFarmInventoryPrefs.getBoolean(ROAD_FARM_INVENTORY_NOTIFICATION_REQUEST_BEFORE, false)
-        set(value) = roadFarmInventoryPrefs.edit { putBoolean(
-            ROAD_FARM_INVENTORY_NOTIFICATION_REQUEST_BEFORE, value) }
+
+    var roadFarmInventoryNotificationState:Int
+        get() = roadFarmInventoryPrefs.getInt(ICE_MIND_NOTIFICATION_STATE, 0)
+        set(value) = roadFarmInventoryPrefs.edit { putInt(ICE_MIND_NOTIFICATION_STATE, value) }
 
     companion object {
+        private const val ICE_MIND_NOTIFICATION_STATE = "roadFarmInventoryNotificationState"
         private const val ROAD_FARM_INVENTORY_SAVED_URL = "roadFarmInventorySavedUrl"
         private const val ROAD_FARM_INVENTORY_EXPIRED = "roadFarmInventoryExpired"
         private const val ROAD_FARM_INVENTORY_APPLICATION_STATE = "roadFarmInventoryApplicationState"
         private const val ROAD_FARM_INVENTORY_NOTIFICAITON_REQUEST = "roadFarmInventoryNotificationRequest"
-        private const val ROAD_FARM_INVENTORY_NOTIFICATION_REQUEST_BEFORE = "roadFarmInventoryNotificationRequestedBefore"
     }
 }

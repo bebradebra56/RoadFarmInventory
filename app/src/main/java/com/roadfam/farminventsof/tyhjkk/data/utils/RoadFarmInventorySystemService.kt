@@ -13,11 +13,11 @@ import java.util.Locale
 
 class RoadFarmInventorySystemService(private val context: Context) {
 
-    suspend fun roadFarmInventoryGetGaid() : String  = withContext(Dispatchers.IO){
-        val gaid = AdvertisingIdClient.getAdvertisingIdInfo(context).id ?: "00000000-0000-0000-0000-000000000000"
-        Log.d(RoadFarmInventoryApplication.ROAD_FARM_INVENTORY_MAIN_TAG, "Gaid: $gaid")
-        return@withContext gaid
-    }
+//    suspend fun roadFarmInventoryGetGaid() : String  = withContext(Dispatchers.IO){
+//        val gaid = AdvertisingIdClient.getAdvertisingIdInfo(context).id ?: "00000000-0000-0000-0000-000000000000"
+//        Log.d(RoadFarmInventoryApplication.ROAD_FARM_INVENTORY_MAIN_TAG, "Gaid: $gaid")
+//        return@withContext gaid
+//    }
 
     fun roadFarmInventoryGetAppsflyerId(): String {
         val appsflyrid = AppsFlyerLib.getInstance().getAppsFlyerUID(context) ?: ""

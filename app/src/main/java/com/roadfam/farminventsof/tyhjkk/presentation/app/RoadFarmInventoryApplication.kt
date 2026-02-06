@@ -53,7 +53,7 @@ private const val ROAD_FARM_INVENTORY_LIN = "com.roadfam.farminventsof"
 
 class RoadFarmInventoryApplication : Application() {
     private var roadFarmInventoryIsResumed = false
-    private var roadFarmInventoryConversionTimeoutJob: Job? = null
+//    private var roadFarmInventoryConversionTimeoutJob: Job? = null
     private var roadFarmInventoryDeepLinkData: MutableMap<String, Any>? = null
 
     override fun onCreate() {
@@ -89,7 +89,7 @@ class RoadFarmInventoryApplication : Application() {
             ROAD_FARM_INVENTORY_APP_DEV,
             object : AppsFlyerConversionListener {
                 override fun onConversionDataSuccess(p0: MutableMap<String, Any>?) {
-                    roadFarmInventoryConversionTimeoutJob?.cancel()
+//                    roadFarmInventoryConversionTimeoutJob?.cancel()
                     Log.d(ROAD_FARM_INVENTORY_MAIN_TAG, "onConversionDataSuccess: $p0")
 
                     val afStatus = p0?.get("af_status")?.toString() ?: "null"
@@ -108,11 +108,24 @@ class RoadFarmInventoryApplication : Application() {
 
                                 val resp = response.body()
                                 Log.d(ROAD_FARM_INVENTORY_MAIN_TAG, "After 5s: $resp")
+//                                if (resp?.get("af_status") == "Organic" || resp?.get("af_status") == null) {
+//                                    roadFarmInventoryResume(RoadFarmInventoryAppsFlyerState.RoadFarmInventoryError)
+//                                } else {
+//                                    roadFarmInventoryResume(
+//                                        RoadFarmInventoryAppsFlyerState.RoadFarmInventorySuccess(resp)
+//                                    )
+//                                }
                                 if (resp?.get("af_status") == "Organic" || resp?.get("af_status") == null) {
-                                    roadFarmInventoryResume(RoadFarmInventoryAppsFlyerState.RoadFarmInventoryError)
+                                    roadFarmInventoryResume(
+                                        RoadFarmInventoryAppsFlyerState.RoadFarmInventorySuccess(
+                                            p0
+                                        )
+                                    )
                                 } else {
                                     roadFarmInventoryResume(
-                                        RoadFarmInventoryAppsFlyerState.RoadFarmInventorySuccess(resp)
+                                        RoadFarmInventoryAppsFlyerState.RoadFarmInventorySuccess(
+                                            resp
+                                        )
                                     )
                                 }
                             } catch (d: Exception) {
@@ -126,7 +139,7 @@ class RoadFarmInventoryApplication : Application() {
                 }
 
                 override fun onConversionDataFail(p0: String?) {
-                    roadFarmInventoryConversionTimeoutJob?.cancel()
+//                    roadFarmInventoryConversionTimeoutJob?.cancel()
                     Log.d(ROAD_FARM_INVENTORY_MAIN_TAG, "onConversionDataFail: $p0")
                     roadFarmInventoryResume(RoadFarmInventoryAppsFlyerState.RoadFarmInventoryError)
                 }
@@ -152,7 +165,7 @@ class RoadFarmInventoryApplication : Application() {
                 Log.d(ROAD_FARM_INVENTORY_MAIN_TAG, "AppsFlyer start error: $p0 - $p1")
             }
         })
-        roadFarmInventoryStartConversionTimeout()
+//        roadFarmInventoryStartConversionTimeout()
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@RoadFarmInventoryApplication)
@@ -191,18 +204,18 @@ class RoadFarmInventoryApplication : Application() {
         roadFarmInventoryDeepLinkData = map
     }
 
-    private fun roadFarmInventoryStartConversionTimeout() {
-        roadFarmInventoryConversionTimeoutJob = CoroutineScope(Dispatchers.Main).launch {
-            delay(30000)
-            if (!roadFarmInventoryIsResumed) {
-                Log.d(ROAD_FARM_INVENTORY_MAIN_TAG, "TIMEOUT: No conversion data received in 30s")
-                roadFarmInventoryResume(RoadFarmInventoryAppsFlyerState.RoadFarmInventoryError)
-            }
-        }
-    }
+//    private fun roadFarmInventoryStartConversionTimeout() {
+//        roadFarmInventoryConversionTimeoutJob = CoroutineScope(Dispatchers.Main).launch {
+//            delay(30000)
+//            if (!roadFarmInventoryIsResumed) {
+//                Log.d(ROAD_FARM_INVENTORY_MAIN_TAG, "TIMEOUT: No conversion data received in 30s")
+//                roadFarmInventoryResume(RoadFarmInventoryAppsFlyerState.RoadFarmInventoryError)
+//            }
+//        }
+//    }
 
     private fun roadFarmInventoryResume(state: RoadFarmInventoryAppsFlyerState) {
-        roadFarmInventoryConversionTimeoutJob?.cancel()
+//        roadFarmInventoryConversionTimeoutJob?.cancel()
         if (state is RoadFarmInventoryAppsFlyerState.RoadFarmInventorySuccess) {
             val convData = state.roadFarmInventoryData ?: mutableMapOf()
             val deepData = roadFarmInventoryDeepLinkData ?: mutableMapOf()

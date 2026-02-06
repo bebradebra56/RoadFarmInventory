@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "858838108332",
-    "project_id": "roadfarminventory",
-    "storage_bucket": "roadfarminventory.firebasestorage.app"
+    "project_number": "351249246390",
+    "project_id": "farm-inventory-92194",
+    "storage_bucket": "farm-inventory-92194.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:858838108332:android:9fdc985c99a4b05b18f709",
+        "mobilesdk_app_id": "1:351249246390:android:b02f7523749054a1f05e17",
         "android_client_info": {
           "package_name": "com.roadfam.farminventsof"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyD5ENzs291DU0EOBEbvAh-w_qniwSoWMM8"
+          "current_key": "AIzaSyCMPZPCdO2alN6g6EK8vDnK-WXdIYXbGQg"
         }
       ],
       "services": {
